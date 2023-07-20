@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<minValue>1</minValue>
+	<maxValue>10</maxValue>
+	<maxTries>5</maxTries>
+</root>
