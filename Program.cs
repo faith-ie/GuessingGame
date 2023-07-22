@@ -24,17 +24,25 @@ namespace GuessingGame
                     XmlNodeList settingsNodes = documentElement.ChildNodes;
                     foreach (XmlNode node in settingsNodes)
                     {
-                        if (node.Name == "minValue")
+                        if (Enum.TryParse<Config>(node.Name, out var setting))
                         {
-                            minValue = int.Parse(node.InnerText);
-                        }
-                        else if (node.Name == "maxValue")
-                        {
-                            maxValue = int.Parse(node.InnerText);
-                        }
-                        else if (node.Name == "maxTries")
-                        {
-                            maxTries = int.Parse(node.InnerText);
+                            switch (setting)
+                            {
+                                case Config.MinValue:
+                                    minValue = int.Parse(node.InnerText);
+                                    break;
+
+                                case Config.MaxValue:
+                                    maxValue = int.Parse(node.InnerText);
+                                    break;
+
+                                case Config.MaxTries:
+                                    maxTries = int.Parse(node.InnerText);
+                                    break;
+
+                                default:
+                                    break;
+                            }
                         }
                     }
                 }
@@ -59,20 +67,10 @@ namespace GuessingGame
                     {
                         if (n != e)
                         {
-                            {
-                                if (n > e)
-                                {
-                                    counter--;
-                                    Console.WriteLine("Its lower.");
-                                    Console.WriteLine($"You have {counter} tries left.");
-                                }
-                                if (n < e)
-                                {
-                                    counter--;
-                                    Console.WriteLine("It's higher.");
-                                    Console.WriteLine($"You have {counter} tries left.");
-                                }
-                            }
+                            counter--;
+                            string hint = (n > e) ? "lower" : "higher";
+                            Console.WriteLine($"It's {hint}");
+                            Console.WriteLine($"You have {counter} {(counter == 1 ? "try" : "tries")} left.");
                         }
                         else
                         {
@@ -90,6 +88,13 @@ namespace GuessingGame
                     }
                 }
             }
+        }
+
+        private enum Config
+        {
+            MinValue,
+            MaxValue,
+            MaxTries
         }
     }
 }
